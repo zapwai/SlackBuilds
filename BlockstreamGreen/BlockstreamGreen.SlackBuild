@@ -27,7 +27,7 @@ PRGNAM=BlockstreamGreen
 VERSION=${VERSION:-2.0.25}
 SRC=BlockstreamGreen-x86_64.AppImage
 BUILD=${BUILD:-1}
-TAG=${TAG:-_SBo}
+TAG=${TAG:-_Zap}
 PKGTYPE=${PKGTYPE:-tgz}
 
 if [ -z "$ARCH" ]; then
