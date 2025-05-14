@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Slackware build script for NetHack 3.7.0 (unreleased)
+
+# Copyright 2025 David Ferrone RI, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+HASH=035cd4377f28e8f8cc742f0a610324e36abe585d
+PRGNAM=nethack370
+VERSION=${VERSION:-0.001}
+SRCVERSION=$(echo $VERSION | tr _ -)
+BUILD=${BUILD:-1}
+TAG=${TAG:-_Zap}
+PKGTYPE=${PKGTYPE:-tgz}
+TMP=${TMP:-/tmp/Zap}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ -z "$ARCH" ]; then
+    case "$( uname -m )" in
+	i?86) ARCH=i586 ;;
+	arm*) ARCH=arm ;;
+	*) ARCH=$( uname -m ) ;;
+    esac
+fi
+
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+    echo "$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE"
+    exit 0
+fi
+
+set -e
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+SRCNAM=NetHack-$HASH
+
+cd $TMP
+rm -rf $SRCNAM
+unzip $CWD/$HASH.zip
+cd $SRCNAM
+chown -R root:root .
+
+cd sys/unix
+sh setup.sh hints/linux.370
+cd ../..
+
+sed -i "s|^HACKDIR=\$(PREFIX)/games/lib/nethackdir$|HACKDIR=$PKG/var/lib/$PRGNAM|" src/Makefile
+sed -i "s|^HACKDIR=\$(PREFIX)/games/lib/nethackdir$|HACKDIR=$PKG/var/lib/$PRGNAM|" util/Makefile
+sed -i "s|^HACKDIR=\$(PREFIX)/games/lib/nethackdir$|HACKDIR=$PKG/var/lib/$PRGNAM|; s|^PREFIX=\$(wildcard ~)/nh/install$|PREFIX=$PKG/usr|" Makefile
+
+mkdir -p $PKG/var/lib/$PRGNAM $PKG/usr/games
+
+touch util/makedefs.c
+make fetch-lua
+cd src
+make
+cd ..
+make all
+make install
+
+mkdir -p $PKG/usr/share/games/$PRGNAM
+chown -R root:games $PKG/var/lib/$PRGNAM
+mv $PKG/var/lib/$PRGNAM/nethack $PKG/var/lib/$PRGNAM/recover $PKG/usr/share/games/$PRGNAM
+chmod 775 $PKG/var/lib/$PRGNAM
+chmod 664 $PKG/var/lib/$PRGNAM/*
+chmod 444 $PKG/var/lib/$PRGNAM/nhdat
+chmod 775 $PKG/var/lib/$PRGNAM/save
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a Porting README doc/Guidebook.txt $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+sed -i "s|^HACKDIR=.*|HACKDIR=/var/lib/$PRGNAM|; s|^HACK=.*|HACK=/usr/share/games/$PRGNAM/nethack|" usr/games/nethack
+mv usr/games/nethack usr/games/$PRGNAM
+
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE
