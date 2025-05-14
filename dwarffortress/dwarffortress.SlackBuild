@@ -29,6 +29,9 @@ SRCDIR=df_linux
 BUILD=${BUILD:-1}
 TAG=${TAG:-_Zap}
 PKGTYPE=${PKGTYPE:-tgz}
+TMP=${TMP:-/tmp/Zap}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -43,18 +46,6 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
   exit 0
 fi
 
-if [ "$ARCH" = "i586" ]; then
-  BITFLAG="32"
-elif [ "$ARCH" = "x86_64" ]; then
-  BITFLAG=""
-else
-  BITFLAG=""
-fi
-
-TMP=${TMP:-/tmp/SBo}
-PKG=$TMP/package-$PRGNAM
-OUTPUT=${OUTPUT:-/tmp}
-
 set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -63,7 +54,7 @@ cd $PKG
 mkdir opt opt/$PRGNAM
 cd opt/$PRGNAM
 
-tar pxvf $CWD/$SRCNAM$BITFLAG.tar.bz2
+tar pxvf $CWD/$SRCNAM.tar.bz2
 chown -R root:root .
 chmod -R 755 .
 
