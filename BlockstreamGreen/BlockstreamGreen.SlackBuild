@@ -29,6 +29,9 @@ SRC=BlockstreamGreen-x86_64.AppImage
 BUILD=${BUILD:-1}
 TAG=${TAG:-_Zap}
 PKGTYPE=${PKGTYPE:-tgz}
+TMP=${TMP:-/tmp/Zap}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -42,10 +45,6 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
   echo "$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE"
   exit 0
 fi
-
-TMP=${TMP:-/tmp/SBo}
-PKG=$TMP/package-$PRGNAM
-OUTPUT=${OUTPUT:-/tmp}
 
 set -e
 rm -rf $PKG
