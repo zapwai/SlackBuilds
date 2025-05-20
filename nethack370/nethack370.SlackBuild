@@ -24,9 +24,9 @@
 
 cd $(dirname $0) ; CWD=$(pwd)
 
-HASH=035cd4377f28e8f8cc742f0a610324e36abe585d
+HASH=a4b971c7445d9810fd4a64a4d1cb0b724bdd151e
 PRGNAM=nethack370
-VERSION=${VERSION:-0.001}
+VERSION=${VERSION:-0.002}
 SRCVERSION=$(echo $VERSION | tr _ -)
 BUILD=${BUILD:-1}
 TAG=${TAG:-_Zap}
@@ -64,34 +64,64 @@ cd sys/unix
 sh setup.sh hints/linux.370
 cd ../..
 
-sed -i "s|^HACKDIR=\$(PREFIX)/games/lib/nethackdir$|HACKDIR=$PKG/var/lib/$PRGNAM|" src/Makefile
-sed -i "s|^HACKDIR=\$(PREFIX)/games/lib/nethackdir$|HACKDIR=$PKG/var/lib/$PRGNAM|" util/Makefile
-sed -i "s|^HACKDIR=\$(PREFIX)/games/lib/nethackdir$|HACKDIR=$PKG/var/lib/$PRGNAM|; s|^PREFIX=\$(wildcard ~)/nh/install$|PREFIX=$PKG/usr|" Makefile
+# Do not edit include/config.h if you're using the WANT_WIN options below.
+# HACKDIR is the location of the game files. SHELLDIR is location of the launcher (usr/games by default).
+sed -i "s|^HACKDIR=\$(PREFIX)/games/lib/nethackdir$|HACKDIR=$PKG/var/lib/$PRGNAM|; s|^PREFIX=\$(wildcard ~)/nh/install$|PREFIX=$PKG/usr|" src/Makefile util/Makefile Makefile
 
 mkdir -p $PKG/var/lib/$PRGNAM $PKG/usr/games
 
 touch util/makedefs.c
 make fetch-lua
 cd src
-make
+
+# These options must match the options below.
+# Uncomment ALL THREE make lines for the build that you choose.
+#make WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1    # build 3
+#make WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_QT=1    # build 2
+make WANT_WIN_ALL=1		# build 1
+#make                           # build 0
+
 cd ..
-make all
-make install
+
+## ## ## ## sys/unix/NewInstall.unx ## ## ## ##
+# As an example, to build a binary with tty + curses + X11 support, you can use the following build command:
+# make WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1 all
+# make WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1 install
+## build 3
+
+# make WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_QT=1 all
+# make WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_QT=1 install
+## build 2
+
+# To build a binary with tty + curses + X11 + Qt support (that is, all the
+# interfaces that are available for unix), you can use the following shorthand build command:
+make WANT_WIN_ALL=1 all
+make WANT_WIN_ALL=1 install
+## build 1
+
+# make all
+# make install
+## build 0 (tty only)
+## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
 
 mkdir -p $PKG/usr/share/games/$PRGNAM
 chown -R root:games $PKG/var/lib/$PRGNAM
 mv $PKG/var/lib/$PRGNAM/nethack $PKG/var/lib/$PRGNAM/recover $PKG/usr/share/games/$PRGNAM
-chmod 775 $PKG/var/lib/$PRGNAM
 chmod 664 $PKG/var/lib/$PRGNAM/*
+chmod 775 $PKG/var/lib/$PRGNAM $PKG/var/lib/$PRGNAM/save
 chmod 444 $PKG/var/lib/$PRGNAM/nhdat
-chmod 775 $PKG/var/lib/$PRGNAM/save
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a Porting README doc/Guidebook.txt $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
+mkdir -p $PKG/usr/share/pixmaps $PKG/usr/share/applications
+cat $CWD/nethack370.desktop > $PKG/usr/share/applications/nethack370.desktop
+cat $CWD/nethack370.png > $PKG/usr/share/pixmaps/nethack370.png
+
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 sed -i "s|^HACKDIR=.*|HACKDIR=/var/lib/$PRGNAM|; s|^HACK=.*|HACK=/usr/share/games/$PRGNAM/nethack|" usr/games/nethack

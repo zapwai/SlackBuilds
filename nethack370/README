@@ -7,5 +7,16 @@ This is a work in progress and NOT A RELEASE of NetHack.
 
 https://github.com/NetHack/NetHack
 
-This package can be installed alongside NetHack 3.6.7
+----
 
+This package can safely be installed alongside NetHack 3.6.7
+
+By default the build includes Curses, X11, and Qt. The SlackBuild can 
+be edited to remove that support. To run with a windowing system use:
+
+nethack370 -wcurses
+nethack370 -wx11
+nethack370 -wqt
+
+The SlackBuild includes a desktop launcher which runs Qt.
+Change to x11 by editing /usr/share/applications/nethack370.desktop
