@@ -20,3 +20,6 @@ nethack370 -wqt
 
 The SlackBuild includes a desktop launcher which runs Qt.
 Change to x11 by editing /usr/share/applications/nethack370.desktop
+
+(Note that a new update may conflict with old saved games
+located in /var/lib/nethack370/save)
