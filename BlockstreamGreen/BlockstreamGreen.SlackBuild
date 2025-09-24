@@ -24,8 +24,10 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PRGNAM=BlockstreamGreen
-VERSION=${VERSION:-2.0.26}
-SRC=BlockstreamGreen-x86_64.AppImage
+VERSION=${VERSION:-2.0.28}
+SRC=Blockstream-x86_64.AppImage
+# Changed from BlockstreamGreen to Blockstream in version 2.0.28
+# (This affects the exec and desktop files as well)
 BUILD=${BUILD:-1}
 TAG=${TAG:-_Zap}
 PKGTYPE=${PKGTYPE:-tgz}
