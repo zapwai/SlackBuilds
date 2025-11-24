@@ -24,9 +24,9 @@
 
 cd $(dirname $0) ; CWD=$(pwd)
 
-HASH=a6801b004c4c4e68bd3378a7589b0686cf9ef6b4
+HASH=fce66245cab5a4c5f91faac975b17ddb1f4df267
 PRGNAM=nethack370
-VERSION=${VERSION:-0.009}
+VERSION=${VERSION:-0.010}
 SRCVERSION=$(echo $VERSION | tr _ -)
 BUILD=${BUILD:-1}
 TAG=${TAG:-_Zap}
