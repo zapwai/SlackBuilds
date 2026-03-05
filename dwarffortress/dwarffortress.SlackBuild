@@ -23,8 +23,8 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 cd $(dirname $0) ; CWD=$(pwd)
 PRGNAM=dwarffortress
-VERSION=${VERSION:-0.53.10}
-SRCNAM=df_53_10_linux
+VERSION=${VERSION:-0.53.11}
+SRCNAM=df_53_11_linux
 SRCDIR=df_linux
 BUILD=${BUILD:-1}
 TAG=${TAG:-_Zap}
