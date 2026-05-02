@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Application
-Terminal=false
-Exec=/usr/games/nethack370 -wqt
-Name=NetHack 3.7.0 In Development
-Icon=nethack370
