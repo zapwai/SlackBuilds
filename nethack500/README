@@ -1,0 +1,10 @@
+NetHack 5.0.0 is a version of the game NetHack released in May 2026.
+
+This package can safely be installed alongside Slackware's system default copy of NetHack.
+
+The working directory is /var/lib/nethack500.
+
+This script is set to build with TTY, QT, and X11 support.
+(The .desktop file uses QT)
+You can run in a windowed mode with 'nethack -wqt' or 'nethack -wx11'
+(Commands are included to build for QT, or X11, or neither.)
