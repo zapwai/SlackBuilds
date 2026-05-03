@@ -28,7 +28,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PRGNAM=nethack500
 VERSION=5.0.0
 
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_Zap}
 PKGTYPE=${PKGTYPE:-tgz}
 TMP=${TMP:-/tmp/Zap}
@@ -76,8 +76,8 @@ make fetch-lua
 ## Uncomment ONE pair of the following make commands, depending on which windowing system you would like to support.
 ## ## ## ## sys/unix/NewInstall.unx ## ## ## ##
 # As an example, to build a binary with tty + curses + X11 support, you can use the following build command:
-# make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1
-# make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1 install
+make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1
+make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1 install
 ## build 3
 
 # To build with tty + curses + QT support, use the following command:
@@ -87,8 +87,8 @@ make fetch-lua
 
 # To build a binary with tty + curses + X11 + Qt support (that is, all the interfaces that are available for unix),
 # you can use the following shorthand build command:
-make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_ALL=1
-make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_ALL=1 install
+# make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_ALL=1
+# make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_ALL=1 install
 ## build 1
 
 # make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM

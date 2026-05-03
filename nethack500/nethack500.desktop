@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
 Terminal=false
-Exec=/usr/games/nethack500 -wqt
+Exec=/usr/games/nethack500 -wx11
 Name=NetHack 5.0.0
 Icon=nethack500

@@ -4,7 +4,9 @@ This package can safely be installed alongside Slackware's system default copy o
 
 The working directory is /var/lib/nethack500.
 
-This script is set to build with TTY, QT, and X11 support.
-(The .desktop file uses QT)
+This script is set to build with X11 support.
+(The .desktop file uses X11)
 You can run in a windowed mode with 'nethack -wqt' or 'nethack -wx11'
-(Commands are included to build for QT, or X11, or neither.)
+(Make commands are included to build for QT, X11, both, or neither.)
+
+Slackware -current is capable of building with QT, so feel free to edit the .desktop file and the SlackBuild (to build #1).
