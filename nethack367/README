@@ -1,0 +1,5 @@
+NetHack 3.6.7 is a version of the game NetHack released in February 2023.
+
+This package can safely be installed alongside Slackware's system default copy of NetHack.
+
+This build only includes Curses (tty) graphics. The working directory is /var/lib/nethack367.

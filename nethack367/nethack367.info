@@ -1,0 +1,11 @@
+PRGNAM="nethack367"
+VERSION="3.6.7"
+HOMEPAGE="https://www.nethack.org/v367/download-src.html"
+DOWNLOAD="https://www.nethack.org/download/3.6.7/nethack-367-src.tgz"
+MD5SUM="eef55cf2d94f637386bf9beefdbe44dc"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+REQUIRES=""
+MAINTAINER="David Ferrone"
+EMAIL="zapwai@gmail.com"
+info
