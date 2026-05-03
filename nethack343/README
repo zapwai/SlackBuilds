@@ -1,0 +1,5 @@
+NetHack 3.4.3 is a version of the game NetHack released in December 2003.
+
+This package can safely be installed alongside Slackware's system default copy of NetHack.
+
+This build only includes Curses (tty) graphics. The working directory is /var/lib/nethack343.

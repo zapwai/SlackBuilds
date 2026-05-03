@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+          |-----handy-ruler------------------------------------------------------|
+nethack343: nethack343 (Rogue-like game)
+nethack343:
+nethack343: Nethack is a single-player dungeon exploration game. The emphasis is
+nethack343: on discovering the detail of the dungeon. Each game presents a
+nethack343: different landscape - the random number generator provides an
+nethack343: essentially unlimited number of variations of the dungeon and its
+nethack343: denizens to be discovered by the player in one of a number of
+nethack343: characters: you can pick your race, your role, and your gender.
+nethack343:
+nethack343: Homepage: http://www.nethack.org NetHack 3.4.3 Released Dec 2003
+nethack343: This package was made to run in parallel with system install nethack.

@@ -1,0 +1,115 @@
+#!/bin/bash
+
+# Slackware build script for NetHack 3.4.3 (2003 release)
+
+# Copyright 2026 David Ferrone RI, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PRGNAM=nethack343
+VERSION=${VERSION:-3.4.3}
+SRCVERSION=$(echo $VERSION | tr _ -)
+BUILD=${BUILD:-1}
+TAG=${TAG:-_Zap}
+PKGTYPE=${PKGTYPE:-tgz}
+TMP=${TMP:-/tmp/Zap}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ -z "$ARCH" ]; then
+    case "$( uname -m )" in
+	i?86) ARCH=i586 ;;
+	arm*) ARCH=arm ;;
+	*) ARCH=$( uname -m ) ;;
+    esac
+fi
+
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+    echo "$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE"
+    exit 0
+fi
+
+set -e
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+SRCNAM=nethack-343-src.tgz
+FOLDER=nethack-3.4.3
+
+cd $TMP
+rm -rf $SRCNAM
+tar xf $CWD/$SRCNAM
+cd $FOLDER
+chown -R root:root .
+
+cd sys/unix
+sh setup.sh hints || exit 1
+cd ../..
+
+sed -i 's|/usr/games/lib/nethackdir|/var/lib/nethack343|' include/config.h
+
+mkdir -p $PKG/var/lib/$PRGNAM $PKG/usr/games
+
+# Error : conflicting types for 'tparm' (comment out, use curses.h declaration)
+sed -i 's|^extern char \*tparm();|//&|' win/tty/termcap.c
+
+# Error : -ltermlib (swap to lncurses in src/Makefile)
+sed -i 's|^WINTTYLIB|#&|' src/Makefile
+sed -i '/^#WINTTYLIB/a\WINTTYLIB = -lncurses' src/Makefile
+
+make GAME=nethack343 GAMEDIR=$PKG/var/lib/nethack343 PREFIX=$PKG/usr/ CC="gcc -std=gnu89 -Wno-implicit-int -Wno-return-type" install || exit 1
+
+# These three parts taken from Volkerding's NetHack Slackbuild
+# Fix some paths:
+sed -e "s|HACKDIR=$PKG/|HACKDIR=/|" \
+    -e 's|HACK=$HACKDIR|HACK=/usr/share/games/nethack343|' \
+    -i $PKG/usr/games/nethack343
+mkdir -p $PKG/usr/share/games/nethack343
+mv $PKG/var/lib/nethack343/{nethack343,recover} $PKG/usr/share/games/nethack343
+
+# Fix perms:
+chown -R root:games $PKG/var/lib/nethack343
+chown root:games $PKG/usr/share/games/nethack343/{nethack343,recover}
+chmod 2755 $PKG/usr/share/games/nethack343/{nethack343,recover}
+
+# Add some documentation:
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a \
+  Porting README* \
+  dat/license \
+  doc/Guidebook.txt \
+$PKG/usr/doc/nethack343-$VERSION
+
+# More permissions, unique to nethack343
+chmod 775 $PKG/var/lib/nethack343
+chmod 775 $PKG/var/lib/nethack343/save
+chmod 664 $PKG/var/lib/nethack343/{record,logfile,perm}
+
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE
