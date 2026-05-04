@@ -28,7 +28,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PRGNAM=nethack500
 VERSION=5.0.0
 
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_Zap}
 PKGTYPE=${PKGTYPE:-tgz}
 TMP=${TMP:-/tmp/Zap}
@@ -87,8 +87,8 @@ make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES
 
 # To build a binary with tty + curses + X11 + Qt support (that is, all the interfaces that are available for unix),
 # you can use the following shorthand build command:
-# make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_ALL=1
-# make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_ALL=1 install
+#make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_ALL=1
+#make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_ALL=1 install
 ## build 1
 
 # make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM
@@ -97,10 +97,9 @@ make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES
 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
 
 chown -R root:games $PKG/var/lib/$PRGNAM
-chmod 664 $PKG/var/lib/$PRGNAM/*
+chmod 664 $PKG/var/lib/$PRGNAM/{perm,record,sysconf,logfile,livelog,xlogfile}
 chmod 775 $PKG/var/lib/$PRGNAM $PKG/var/lib/$PRGNAM/save
-chmod 444 $PKG/var/lib/$PRGNAM/nhdat
-chmod 775 $PKG/var/lib/$PRGNAM/{nethack,recover}
+chmod 2775 $PKG/var/lib/$PRGNAM/{nethack,recover}
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a Porting README doc/Guidebook.txt $PKG/usr/doc/$PRGNAM-$VERSION
