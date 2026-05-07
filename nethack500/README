@@ -4,9 +4,6 @@ This package can safely be installed alongside Slackware's system default copy o
 
 The working directory is /var/lib/nethack500.
 
-This script is set to build with X11 support.
-(The .desktop file uses X11)
-You can run in a windowed mode with 'nethack -wqt' or 'nethack -wx11'
-(Make commands are included to build for QT, X11, both, or neither.)
-
-Slackware -current is capable of building with QT, so feel free to edit the .desktop file and the SlackBuild (to build #1).
+This script builds with X11 support for tiles (for graphical gameplay in addition to regular ascii) and the .desktop file calls 'nethack -wx11'.
+Slackware -current (and Slackware 15 64-bit) is capable of building with Qt (which is run with 'nethack -wqt').
+To build with Qt support pass QT=TRUE option as follows: 'QT=TRUE ./nethack500.Slackbuild'

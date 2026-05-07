@@ -2,6 +2,7 @@
 
 # Slackware build script for NetHack 5.0.0 (official, released May 2, 2026)
 # Based on a script for NetHack 3.7.0 (unreleased)
+# Thanks SlackCoder for the build options
 
 # Copyright 2025, 2026 David Ferrone RI, USA
 # All rights reserved.
@@ -28,12 +29,17 @@ cd $(dirname $0) ; CWD=$(pwd)
 PRGNAM=nethack500
 VERSION=5.0.0
 
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-4}
 TAG=${TAG:-_Zap}
 PKGTYPE=${PKGTYPE:-tgz}
 TMP=${TMP:-/tmp/Zap}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
+
+NETHACK_CURSES=${CURSES:-TRUE}
+NETHACK_QT=${QT:-FALSE}
+NETHACK_TTY=${TTY:-TRUE}
+NETHACK_X11=${X11:-TRUE}
 
 if [ -z "$ARCH" ]; then
     case "$( uname -m )" in
@@ -73,28 +79,21 @@ mkdir -p $PKG/var/lib/$PRGNAM $PKG/usr/games
 touch util/makedefs.c
 make fetch-lua
 
-## Uncomment ONE pair of the following make commands, depending on which windowing system you would like to support.
-## ## ## ## sys/unix/NewInstall.unx ## ## ## ##
-# As an example, to build a binary with tty + curses + X11 support, you can use the following build command:
-make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1
-make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_X11=1 install
-## build 3
+if [ "${NETHACK_CURSES}" = "TRUE" ]; then
+    BUILD_OPTIONS+=("WANT_WIN_CURSES=1")
+fi
+if [ "${NETHACK_QT}" = "TRUE" ]; then
+    BUILD_OPTIONS+=("WANT_WIN_QT=1")
+fi
+if [ "${NETHACK_TTY}" = "TRUE" ]; then
+    BUILD_OPTIONS+=("WANT_WIN_TTY=1")
+fi
+if [ "${NETHACK_X11}" = "TRUE" ]; then
+    BUILD_OPTIONS+=("WANT_WIN_X11=1")
+fi
 
-# To build with tty + curses + QT support, use the following command:
-# make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_QT=1
-# make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_TTY=1 WANT_WIN_CURSES=1 WANT_WIN_QT=1 install
-## build 2
-
-# To build a binary with tty + curses + X11 + Qt support (that is, all the interfaces that are available for unix),
-# you can use the following shorthand build command:
-#make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM WANT_WIN_ALL=1
-#make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM WANT_WIN_ALL=1 install
-## build 1
-
-# make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM
-# make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM install
-## build 0 (tty only)
-## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
+make PREFIX=/usr HACKDIR=/var/lib/$PRGNAM "${BUILD_OPTIONS[@]}"
+make PREFIX=$PKG/usr HACKDIR=$PKG/var/lib/$PRGNAM "${BUILD_OPTIONS[@]}" install
 
 chown -R root:games $PKG/var/lib/$PRGNAM
 chmod 664 $PKG/var/lib/$PRGNAM/{perm,record,sysconf,logfile,livelog,xlogfile}
