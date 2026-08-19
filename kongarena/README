@@ -1,0 +1,10 @@
+I've written a SlackBuild but it's not working properly yet.
+
+In the meantime, to run KongArena from your desktop, you can do the following:
+
+0) Download KongArena-Linux-x64.tar.gz from kongarena.com
+1) 'tar xf KongArena-Linux-x64.tar.gz' (extract the files as your user) and then, as root, move the resulting kong_arena folder into /opt
+1) Put kongarena.desktop in /usr/share/applications/
+2) put kongarena in /usr/games and make it executable (chmod a+x)
+
+You should then be able to type 'kongarena' in terminal, or in your desktop menu.

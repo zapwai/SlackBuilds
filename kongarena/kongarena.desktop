@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=/usr/games/kongarena
+Name=kongarena
+Icon=/opt/kong_arena/images/kong_arena
