@@ -1,4 +1,4 @@
-I've written a SlackBuild but it's not working properly yet.
+(I've written a SlackBuild but permissions are not working properly yet...)
 
 In the meantime, to run KongArena from your desktop, you can do the following:
 
@@ -9,11 +9,11 @@ In the meantime, to run KongArena from your desktop, you can do the following:
 
 You should then be able to type 'kongarena' in terminal, or in your desktop menu.
 
-To add controller support, do the following:
 
+You can change options (e.g. key or joystick inputs, audio, etc.) directly by running kong_arena/bin/dkwolf_linux 
+
+Another way to add controller support is the following:
 0) In kong_arena/bin/extra_args.txt add "-ctrlr kongarena" to the end of the first line
    (e.g. it now says "-nofilter -lowlatency -screen \\.\DISPLAY2 -ctrlr kongarena")
 1) Add an empty folder kong_arena/bin/ctrlr
 2) Add the file kongarena.cfg to the ctrlr folder, adjusting your joystick buttons as necessary
-
-You can also change options (e.g. key inputs, audio, etc.) directly by running kong_arena/bin/dkwolf_linux 
