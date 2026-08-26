@@ -4,7 +4,16 @@ In the meantime, to run KongArena from your desktop, you can do the following:
 
 0) Download KongArena-Linux-x64.tar.gz from kongarena.com
 1) 'tar xf KongArena-Linux-x64.tar.gz' (extract the files as your user) and then, as root, move the resulting kong_arena folder into /opt
-1) Put kongarena.desktop in /usr/share/applications/
-2) put kongarena in /usr/games and make it executable (chmod a+x)
+2) Put kongarena.desktop in /usr/share/applications/
+3) put kongarena in /usr/games and make it executable (chmod a+x)
 
 You should then be able to type 'kongarena' in terminal, or in your desktop menu.
+
+To add controller support, do the following:
+
+0) In kong_arena/bin/extra_args.txt add "-ctrlr kongarena" to the end of the first line
+   (e.g. it now says "-nofilter -lowlatency -screen \\.\DISPLAY2 -ctrlr kongarena")
+1) Add an empty folder kong_arena/bin/ctrlr
+2) Add the file kongarena.cfg to the ctrlr folder, adjusting your joystick buttons as necessary
+
+You can also change options (e.g. key inputs, audio, etc.) directly by running kong_arena/bin/dkwolf_linux 
