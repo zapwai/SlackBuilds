@@ -1,3 +1,6 @@
 #!/bin/bash
 cd /opt/kong_arena
-exec ./KongArena
+exec env LD_PRELOAD=/usr/lib64/libstdc++.so.6 ./KongArena
+# KongArena bundles an older libstdc++.so.6 (GLIBCXX_3.4.33).
+# Slackware's KDE6 libraries require newer GLIBCXX versions.
+# Force use of the system libstdc++.
