@@ -1,19 +1,21 @@
-(I've written a SlackBuild but permissions are not working properly yet...)
+This SlackBuild provides a quick way to install kongarena. It installs to /opt, and will make /opt/kong_arena/bin writeable by all users, but leaves the roms read-only.
 
-In the meantime, to run KongArena from your desktop, you can do the following:
+You can change options (e.g. key or joystick inputs, audio, etc.) directly by running kong_arena/bin/dkwolf_linux then changing options manually and hitting 'save configuration'.
+
+An alternative way to add controller support is the following:
+0) In kong_arena/bin/extra_args.txt add "-ctrlr kongarena" to the end of the first line
+1) Add the empty folder kong_arena/bin/ctrlr
+2) Add the file kongarena.cfg to the ctrlr folder, adjusting your joystick buttons as necessary
+
+-----
+
+As an alternative to using SlackBuild, I will leave these older instructions for posterity.
+These instructions should also work in most linux distributions.
+To run KongArena (for a single user) from your desktop, you can do the following:
 
 0) Download KongArena-Linux-x64.tar.gz from kongarena.com
 1) 'tar xf KongArena-Linux-x64.tar.gz' (extract the files as your user) and then, as root, move the resulting kong_arena folder into /opt
 2) Put kongarena.desktop in /usr/share/applications/
 3) put kongarena in /usr/games and make it executable (chmod a+x)
 
-You should then be able to type 'kongarena' in terminal, or in your desktop menu.
-
-
-You can change options (e.g. key or joystick inputs, audio, etc.) directly by running kong_arena/bin/dkwolf_linux 
-
-Another way to add controller support is the following:
-0) In kong_arena/bin/extra_args.txt add "-ctrlr kongarena" to the end of the first line
-   (e.g. it now says "-nofilter -lowlatency -screen \\.\DISPLAY2 -ctrlr kongarena")
-1) Add an empty folder kong_arena/bin/ctrlr
-2) Add the file kongarena.cfg to the ctrlr folder, adjusting your joystick buttons as necessary
+You should then be able to type 'kongarena' in terminal, or click on the shortcut in your desktop menu.
